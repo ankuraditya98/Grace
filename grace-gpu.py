@@ -765,6 +765,13 @@ def run_one_model(model_id, input_pil_frames):
             loss_arr = [loss] * nframe
             for frame_id in range(1, total_frames, nframe):
                 damaged = decode_with_loss(model, frame_id, loss_arr, dec_frames, codes)
+                # ######## Saving damaged frames #######
+                # save_dir = f"./decoded_frames_loss{int(loss*100)}/"
+                # os.makedirs(save_dir, exist_ok=True)
+
+                # for idx, frame in enumerate(damaged):
+                #     frame.save(os.path.join(save_dir, f"frame_{frame_id + idx:04d}.png"))
+                # ######################################
                 damaged_frames.extend(damaged)
             df["size"] = [eframe.tot_size for eframe in codes[1:]]
             df["psnr"] = [PSNR(o, d) for o, d in zip(orig_frames[1:], damaged_frames)]
